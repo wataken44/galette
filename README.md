@@ -17,37 +17,38 @@ Ansible playbooks and related script to build Linux router for PPPoE providers i
 
 ## Setup
 
-prerequisites
+### prerequisites
 
-* Hardware
-    * 2 NICs (for WAN and LAN)
-* OS
-    * Debian Testing (developer use this)
-        * Maybe this project works with Debian Stable, but not tested... 
+Hardware
+* 2 NICs (for WAN and LAN)
 
-installation
+OS
+* Debian Testing (developer use this)
+    * Maybe this project works with Debian Stable, but not tested... 
 
-* install git, ansible, sudo (if not installed)
+### installation
 
-```# apt install git-core ansible sudo```
+install git, ansible, sudo (if not installed)
 
-* clone this repository
+```
+# apt install git-core ansible sudo
+```
 
-```$ git clone 'https://github.com/wataken44/galette.git'```
-    
-* edit hosts
+clone this repository
+
+```
+$ git clone 'https://github.com/wataken44/galette.git'
+```
+
+### customize and run
+
+edit hosts
 
 ```
 $ cd galette
 $ cp playbook/hosts.sample playbook/hosts
 $ vi playbook hosts
 ```
-
-edit vars.yml
-
-(TBD)
-
-run
 
 * run
 
