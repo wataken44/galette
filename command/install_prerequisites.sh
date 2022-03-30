@@ -1,4 +1,4 @@
 #!/bin/sh
 
 apt update
-apt install git-core ansible sudo
+apt install git-core ansible sudo openssh-server

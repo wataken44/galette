@@ -1,7 +1,7 @@
 # project specific files
 
 playbook/hosts
-
+playbook/host_vars/router.yml
 
 # gitignore for python
 

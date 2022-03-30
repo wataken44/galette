@@ -28,10 +28,10 @@ OS
 
 ### installation
 
-install git, ansible, sudo (if not installed)
+install least packages if not installed
 
 ```
-# apt install git-core ansible sudo
+# apt install git-core ansible sudo openssh-server
 ```
 
 clone this repository
@@ -40,7 +40,25 @@ clone this repository
 $ git clone 'https://github.com/wataken44/galette.git'
 ```
 
-### customize and run
+### check sudo and ssh login
+
+check that sudo REQUESTS PASSWORD and command succeed
+
+```
+$ sudo hostname
+[sudo] password for user:
+router
+```
+
+check ssh with private key succeed
+
+```
+$ ssh 127.0.0.1 -i ~/.ssh/<private_key>
+$
+```
+
+
+### edit and run
 
 edit hosts
 
@@ -50,7 +68,22 @@ $ cp playbook/hosts.sample playbook/hosts
 $ vi playbook hosts
 ```
 
-* run
+check basic ansible succeed
+
+```
+$ command/show_hostname.py
+...
+BECOME password:
+...
+127.0.0.1                  : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
+
+install packages
+
+```
+$ command/install_packages.py
+```
+
 
 ## Features
 

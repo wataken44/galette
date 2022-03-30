@@ -13,6 +13,7 @@ import constants
 
 
 def setup():
+    print("cd %s" % constants.PLAYBOOK_DIR)
     os.chdir(constants.PLAYBOOK_DIR)
 
 

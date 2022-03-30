@@ -1,0 +1,11 @@
+
+- name: update packages
+  apt:
+    autoclean: yes
+    autoremove: yes
+    update_cache: yes
+
+- name: upgrade packages
+  apt:
+    upgrade: safe
+    
