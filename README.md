@@ -27,17 +27,21 @@ prerequisites
 
 installation
 
-* install git and ansible
+* install git, ansible, sudo (if not installed)
 
-    # apt install git-core ansible
+```# apt install git-core ansible sudo```
 
 * clone this repository
 
-    # git clone 'https://github.com/wataken44/galette.git'
+```$ git clone 'https://github.com/wataken44/galette.git'```
     
-edit ansible.cfg
+* edit hosts
 
-(TBD)
+```
+$ cd galette
+$ cp playbook/hosts.sample playbook/hosts
+$ vi playbook hosts
+```
 
 edit vars.yml
 
