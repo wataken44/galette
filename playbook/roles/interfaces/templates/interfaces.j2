@@ -1,0 +1,47 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+{% for iface in interfaces %}
+{% if "auto" in iface and iface["auto"] == true %}
+auto {{ iface["name"] }}
+allow-hotplug  {{ iface["name"] }}
+
+{% endif %}
+{% for addr in iface.get("ipv4", []) %}
+iface {{ iface["name"] }} inet {{ addr["method"] }}
+    {% if "address" in addr -%}
+    address {{ addr["address"] }}
+    {% endif -%}
+    {% if "netmask" in addr -%}
+    netmask {{ addr["netmask"] }}
+    {% endif -%}
+
+{% endfor %}
+{% if pppoe["ethernet-interface"] == iface["name"] %}
+iface {{ iface["name"] }} inet manual
+    address 0.0.0.0
+    up ifup {{ pppoe["ppp-interface"] }}
+    down ifdown {{ pppoe["ppp-interface"] }}
+
+iface {{ pppoe["ppp-interface"] }} inet ppp
+    provider dsl-provider-{{ pppoe["provider"] }}
+ 
+{% endif %}
+
+{% for addr in iface.get("ipv6",[]) %}
+iface {{ iface["name"] }} inet6 {{ addr["method"] }}
+    address {{ addr["address"] }}
+    {% if "netmask" in addr -%}
+    netmask {{ addr["netmask"] }}
+    {% endif %}
+
+{% endfor %}
+
+{% endfor %}
+

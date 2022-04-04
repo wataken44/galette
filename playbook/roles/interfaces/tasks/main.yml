@@ -1,0 +1,13 @@
+
+- name: set up interfaces
+  template:
+    src: interfaces.j2
+    dest: /etc/network/interfaces
+    mode: 0644
+    owner: root
+    group: root
+
+- name: enable networking
+  service:
+    name: networking
+    enabled: yes
