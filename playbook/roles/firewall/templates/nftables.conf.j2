@@ -1,0 +1,62 @@
+#!/usr/sbin/nft -f
+
+flush ruleset
+
+table inet filter {
+    chain input {
+        type filter hook input priority 200; policy drop;
+
+        ct state related,established counter accept        
+
+        iif lo accept
+        {% for iface in interfaces -%}
+        {% if iface["lan"] == true -%}
+        iifname "{{ iface["name"] }}" counter accept
+        {% endif -%}
+        {% endfor %}
+
+    }
+    
+    chain forward {
+        type filter hook forward priority 200; policy drop;
+
+        ct state related,established counter accept        
+
+        {% for network in networks -%}
+        {% if network["lan"] == true -%}
+        ip saddr {{ network["network"] }} tcp flags & (syn|rst) == syn counter tcp option maxseg size set rt mtu
+        ip saddr {{ network["network"] }} oifname "{{ pppoe["ppp-interface"] }}" counter accept
+        {% endif -%}
+        {% endfor %}
+
+    }
+    
+    chain output {
+        type filter hook output priority 200; policy accept;
+    }
+}
+
+table inet nat {
+    chain prerouting {
+        type nat hook prerouting priority 100;
+    }
+
+    chain input {
+        type nat hook input priority 300; policy accept;
+    }
+
+    chain output {
+        type nat hook output priority 100; policy accept;
+    }
+
+    chain postrouting {
+        type nat hook postrouting priority 300; policy accept;
+
+        {% for network in networks -%}
+        {% if network["lan"] == true -%}
+        oifname "{{ pppoe["ppp-interface"] }}" ip saddr {{ network["network"] }} masquerade
+        {% endif -%}
+        {% endfor %}
+
+    }
+}

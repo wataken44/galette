@@ -1,5 +1,5 @@
 
-- name: set up interfaces
+- name: create interfaces configuration
   template:
     src: interfaces.j2
     dest: /etc/network/interfaces
@@ -7,7 +7,7 @@
     owner: root
     group: root
 
-- name: enable networking
+- name: enable networking service
   service:
     name: networking
     enabled: yes

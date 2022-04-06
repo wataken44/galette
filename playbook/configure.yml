@@ -3,5 +3,9 @@
   gather_facts: yes
   become: yes
   roles:
+    - ntp
     - sysctl
     - interfaces
+    - pppoe
+    - firewall
+    

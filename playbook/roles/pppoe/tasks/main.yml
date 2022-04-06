@@ -1,0 +1,13 @@
+
+- name: create provider configuration
+  template:
+    src: dsl-provider.j2
+    dest: '/etc/ppp/peers/dsl-provider-{{ pppoe["provider"] }}'
+    owner: root
+    group: root
+    mode: 0644
+
+- name: create secrets configuration
+  lineinfile:
+    path: /etc/ppp/chap-secrets
+    line: '{{pppoe["username"]}}  *  {{ pppoe["password"] }}'
