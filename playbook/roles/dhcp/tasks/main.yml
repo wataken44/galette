@@ -1,0 +1,10 @@
+
+- name: create dhcp configuration
+  template:
+    src: "{{ item }}.j2"
+    dest: /etc/kea/{{ item }}
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+  - "kea-dhcp4.conf"
