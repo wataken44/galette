@@ -10,9 +10,7 @@ from common import *
 
 
 def main():
-    setup()
-
-    run_playbook("install_packages.yml")
+    run("install_packages.yml")
 
 
 if __name__ == "__main__":

@@ -40,7 +40,7 @@ clone this repository
 $ git clone 'https://github.com/wataken44/galette.git'
 ```
 
-### check sudo and ssh login
+### check sudo
 
 check that sudo REQUESTS PASSWORD and command succeed
 
@@ -48,13 +48,6 @@ check that sudo REQUESTS PASSWORD and command succeed
 $ sudo hostname
 [sudo] password for user:
 router
-```
-
-check ssh with private key succeed
-
-```
-$ ssh 127.0.0.1 -i ~/.ssh/<private_key>
-$
 ```
 
 
@@ -83,6 +76,10 @@ install packages
 ```
 $ command/install_packages.py
 ```
+
+edit vars
+
+configure
 
 
 ## Features

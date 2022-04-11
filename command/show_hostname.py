@@ -10,9 +10,7 @@ from common import *
 
 
 def main():
-    setup()
-
-    run_playbook("show_hostname.yml")
+    run("show_hostname.yml")
 
 
 if __name__ == "__main__":
