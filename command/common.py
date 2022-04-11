@@ -14,6 +14,7 @@ import tempfile
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__) + "/../") + "/"
 COMMAND_DIR = BASE_DIR + "command/"
+CONFIG_DIR = BASE_DIR + "config/"
 PLAYBOOK_DIR = BASE_DIR + "playbook/"
 
 
@@ -29,6 +30,7 @@ def run(playbook):
     move_to_exec_dir(exec_dir)
 
     setup_hosts(exec_dir)
+    setup_vars(exec_dir)
 
     run_playbook(playbook, ask_become_pass, verbose)
 
@@ -63,6 +65,16 @@ ansible_connection=local
     os.system(cmd)
 
 
+def setup_vars(exec_dir):
+    cmd = "%sgenerate_vars.py %svars.yml %splaybook/host_vars/router.yml" % (
+        COMMAND_DIR,
+        CONFIG_DIR,
+        exec_dir,
+    )
+    print(cmd)
+    os.system(cmd)
+
+
 def move_to_exec_dir(exec_dir):
     print("cd %splaybook" % exec_dir)
     os.chdir(exec_dir + "playbook")
@@ -70,6 +82,7 @@ def move_to_exec_dir(exec_dir):
 
 def cleanup_exec_dir(exec_dir):
     cmd = "rm -rf %s" % exec_dir
+    print(cmd)
     os.system(cmd)
 
 
