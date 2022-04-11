@@ -28,6 +28,8 @@ def run(playbook):
     exec_dir = create_exec_dir()
     move_to_exec_dir(exec_dir)
 
+    setup_hosts(exec_dir)
+
     run_playbook(playbook, ask_become_pass, verbose)
 
     if verbose == 0:
@@ -44,6 +46,21 @@ def create_exec_dir():
     print(cmd)
 
     return exec_dir
+
+
+def setup_hosts(exec_dir):
+    body = """
+[routers]
+router ansible_host=localhost
+
+[routers:vars]
+ansible_python_interpreter=auto_silent
+ansible_connection=local
+
+"""
+    cmd = "echo '%s' > %splaybook/hosts" % (body, exec_dir)
+    print(cmd)
+    os.system(cmd)
 
 
 def move_to_exec_dir(exec_dir):
