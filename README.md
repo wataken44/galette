@@ -53,14 +53,6 @@ router
 
 ### edit and run
 
-edit hosts
-
-```
-$ cd galette
-$ cp playbook/hosts.sample playbook/hosts
-$ vi playbook hosts
-```
-
 check basic ansible succeed
 
 ```

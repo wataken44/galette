@@ -1,0 +1,46 @@
+pppoe:
+  ethernet-interface: eth0
+  ppp-interface: ppp0
+  provider: example-provider
+  username: foo@example.com
+  password: "******"
+
+interfaces:
+  - name: eth0
+    auto: true
+    lan: false
+    ipv6:
+    - method: auto
+      accept_ra: 2
+  - name: eth1
+    auto: true
+    lan: true
+    ipv4:
+    - method: static
+      address: 192.168.3.254
+      netmask: 255.255.255.0
+
+networks:
+  - network: 192.168.3.0/24
+    lan: true
+  
+ntp:
+  servers:
+  - time1.google.com
+  - time2.google.com
+
+dhcp:
+  interfaces:
+  - "eth1"
+  subnets:
+  - subnet: "192.168.3.0/24"
+    pools:
+    - "192.168.3.16 - 192.168.3.31"
+    option-data:
+    - name: "routers"
+      data: "192.168.3.254"
+    - name: "domain-name-servers"
+      data: "192.168.3.254"
+    - name: "ntp-servers"
+      data: "192.168.3.254"
+    
