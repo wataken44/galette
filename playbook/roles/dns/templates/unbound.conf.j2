@@ -1,0 +1,16 @@
+
+include-toplevel: "/etc/unbound/unbound.conf.d/*.conf"
+
+server:
+{% for iface in interfaces %}
+{% if iface["lan"] == true %}
+  interface: {{ iface["name"] }}
+{% endif %}
+{% endfor %}
+{% for network in networks %}
+{% if network["lan"] == true %}
+  access-control: {{ network["network"] }} allow
+{% endif %}
+{% endfor %}
+  unwanted-reply-threshold: 10000000
+  harden-referral-path: yes

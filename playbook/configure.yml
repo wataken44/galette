@@ -9,3 +9,4 @@
     - pppoe
     - firewall
     - dhcp    
+    - dns

@@ -7,4 +7,13 @@
     group: root
     mode: 0644
   with_items:
+  - "kea-ctrl-agent.conf"
+  - "kea-dhcp-ddns.conf"
   - "kea-dhcp4.conf"
+  - "kea-dhcp6.conf"
+
+- name: enable dhcp
+  service:
+    name: kea-dhcp4-server
+    enabled: true
+  

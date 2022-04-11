@@ -1,0 +1,13 @@
+
+- name: create dns configuration
+  template:
+    src: unbound.conf.j2
+    dest: /etc/unbound/unbound.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: enable dns
+  service:
+    name: unbound
+    enabled: true

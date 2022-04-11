@@ -9,3 +9,5 @@
     - unbound
     - chrony
     - radvd
+    - tcpdump
+    - dnsutils
