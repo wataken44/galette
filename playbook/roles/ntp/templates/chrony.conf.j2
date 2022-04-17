@@ -7,6 +7,13 @@
 allow {{ network["network"] }}
 {% endif %}
 {% endfor %}
+{% if ipv6 is defined %}
+{% for network in networks6 %}
+{% if network["lan"] %}
+allow {{ network["network"] }}
+{% endif %}
+{% endfor %}
+{% endif %}
 
 # servers
 {% for server in ntp["servers"] %}

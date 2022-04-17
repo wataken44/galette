@@ -22,10 +22,10 @@ def main():
     data = yaml.safe_load(fp)
     fp.close()
 
-    address, netmask = get_global_ipv6()
+    interface, address, netmask = get_global_ipv6()
     if address is not None:
-        print("external ipv6 address: %s/%s" % (address, netmask))
-        add_ipv6(data, address, netmask)
+        print("external ipv6 address: %s %s/%s" % (interface, address, netmask))
+        add_ipv6(data, interface, address, netmask)
     else:
         print("no external ipv6 address. configuration skipped.")
 
@@ -42,24 +42,26 @@ def get_global_ipv6():
     d = json.loads(proc.stdout.decode("utf-8").strip())
 
     if d is None:
-        return None, None
+        return None, None, None
 
+    interface = d.get("interface")
     address = d.get("address")
     netmask = d.get("netmask")
 
-    return address, netmask
+    return interface, address, netmask
 
 
-def add_ipv6(data, external_address, global_netmask):
+def add_ipv6(data, external_interface, external_address, global_netmask):
     info = GlobalNetworkInfo(external_address, global_netmask)
 
     data["ipv6"] = {
+        "external-interface": external_interface,
         "external-address": external_address,
         "netmask": global_netmask,
         "network": str(info.network_address),
     }
 
-    add_ipv6_interface(data, info)
+    # add_ipv6_interface(data, info)
 
 
 def add_ipv6_interface(data, info):

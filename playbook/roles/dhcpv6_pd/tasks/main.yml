@@ -1,0 +1,30 @@
+
+- name: create dhcpv6-pd configuration when ipv6 is enabled
+  template:
+    src: "dhcp6c.conf.j2"
+    dest: /etc/wide-dhcpv6/dhcp6c.conf
+    owner: root
+    group: root
+    mode: 0644
+  when: ipv6 is defined
+
+- name: create dhcpv6-pd interface configuration when ipv6 is enabled
+  template:
+    src: "wide-dhcpv6-client.j2"
+    dest: /etc/default/wide-dhcpv6-client
+    owner: root
+    group: root
+    mode: 0644
+  when: ipv6 is defined
+
+- name: enable dhcpv6-pd when ipv6 is enabled
+  service:
+    name: wide-dhcpv6-client
+    enabled: true
+  when: ipv6 is defined
+
+- name: disable dhcpv6 when ipv6 is disabled
+  service:
+    name: wide-dhcpv6-client
+    enabled: false
+  when: ipv6 is not defined

@@ -1,15 +1,18 @@
 
-interface {{ ipv6["internal-interface"] }} {
+{% for conf in ra %}
+interface {{ conf["interface"] }} {
   AdvSendAdvert on;
   AdvManagedFlag off;
   AdvOtherConfigFlag on;
 
-  prefix {{ ipv6["network"] }}/{{ ipv6["netmask"] }} {
+  prefix {{ conf["prefix"] }} {
     AdvOnLink on;
     AdvAutonomous on;
-    AdvRouterAddr on;
   };
 
-  RDNSS {{ ipv6["internal-address"] }} {
+{% if "dns" in conf %}
+  RDNSS {{ conf["dns"] }} {
   };
+{% endif %}
 };
+{% endfor %}

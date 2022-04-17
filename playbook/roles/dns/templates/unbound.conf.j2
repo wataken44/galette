@@ -13,7 +13,11 @@ server:
 {% endif %}
 {% endfor %}
 {% if ipv6 is defined %}
-  access-control: {{ ipv6["network"] }}/{{ ipv6["netmask"] }} allow
+{% for network in networks6 %}
+{% if network["lan"] == true %}
+  access-control: {{ network["network"] }} allow
+{% endif %}
+{% endfor %}
 {% endif %}
   unwanted-reply-threshold: 10000000
   harden-referral-path: yes

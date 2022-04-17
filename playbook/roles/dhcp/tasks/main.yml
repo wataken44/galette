@@ -10,10 +10,39 @@
   - "kea-ctrl-agent.conf"
   - "kea-dhcp-ddns.conf"
   - "kea-dhcp4.conf"
-  - "kea-dhcp6.conf"
 
 - name: enable dhcp
   service:
     name: kea-dhcp4-server
     enabled: true
-  
+
+- name: disable dhcp-ddns and ctrl-agent
+  service:
+    name: "{{ item }}"
+    enabled: false
+  with_items:
+    - "kea-dhcp-ddns-server"
+    - "kea-ctrl-agent"
+
+- name: create dhcpv6 configuration when ipv6 is enabled
+  template:
+    src: "{{ item }}.j2"
+    dest: /etc/kea/{{ item }}
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+  - "kea-dhcp6.conf"
+  when: ipv6 is defined
+
+- name: enable dhcpv6 when ipv6 is enabled
+  service:
+    name: kea-dhcp6-server
+    enabled: true
+  when: ipv6 is defined
+
+- name: disable dhcpv6 when ipv6 is disabled
+  service:
+    name: kea-dhcp6-server
+    enabled: false
+  when: ipv6 is not defined

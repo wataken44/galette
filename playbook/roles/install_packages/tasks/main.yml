@@ -13,3 +13,4 @@
     - dnsutils
     - strongswan
     - xl2tpd
+    - wide-dhcpv6-client

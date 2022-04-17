@@ -82,7 +82,7 @@ table ip nat {
 
 {% for network in networks %}
 {% if network["lan"] == true %}
-        oifname "{{ pppoe["ppp-interface"] }}" ip saddr {{ network["network"] }} masquerade
+        ip saddr {{ network["network"] }} oifname "{{ pppoe["ppp-interface"] }}" masquerade
 {% endif %}
 {% endfor %}
     }
@@ -113,6 +113,10 @@ table ip6 filter {
         iif {{ iface["name"] }} accept
 {% endif %}
 {% endfor %}
+{% if ipv6 is defined %}
+        udp dport 546 counter accept
+        udp dport 547 counter accept
+{% endif %}
     }
 
     chain forward {
@@ -160,5 +164,14 @@ table ip6 nat {
 
     chain postrouting {
         type nat hook postrouting priority 300; policy accept;
+
+{% if ipv6 is defined %}
+{% for network in networks6 %}
+{% if network["lan"] == true %}
+        ip6 saddr {{ network["network"] }} oif {{ ipv6["external-interface"] }} counter masquerade
+{% endif %}
+{% endfor %}
+{% endif %}
+
     }
 }
