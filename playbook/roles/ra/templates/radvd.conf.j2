@@ -1,0 +1,15 @@
+
+interface {{ ipv6["internal-interface"] }} {
+  AdvSendAdvert on;
+  AdvManagedFlag off;
+  AdvOtherConfigFlag on;
+
+  prefix {{ ipv6["network"] }}/{{ ipv6["netmask"] }} {
+    AdvOnLink on;
+    AdvAutonomous on;
+    AdvRouterAddr on;
+  };
+
+  RDNSS {{ ipv6["internal-address"] }} {
+  };
+};

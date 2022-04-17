@@ -11,3 +11,5 @@
     - radvd
     - tcpdump
     - dnsutils
+    - strongswan
+    - xl2tpd

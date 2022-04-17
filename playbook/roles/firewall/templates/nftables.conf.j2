@@ -6,14 +6,31 @@ table ip filter {
     chain input {
         type filter hook input priority 200; policy drop;
 
+        # accept by state
         ct state related,established counter accept        
 
+        # accept by interface
         iif lo accept
 {% for iface in interfaces %}
 {% if iface["lan"] == true %}
-        iifname "{{ iface["name"] }}" counter accept
+        iif {{ iface["name"] }} counter accept
 {% endif %}
 {% endfor %}
+
+        # accept by saddr
+{% for network in networks %}
+{% if network.get("vpn") == true %}
+        iifname "{{ pppoe["ppp-interface"] }}" ip saddr {{ network["network"] }} counter drop
+        iifname "ppp*" ip saddr {{ network["network"] }} counter accept
+{% endif %}
+{% endfor %}
+
+        # accept by port
+{% if vpn is defined %}
+        udp dport 500 counter accept
+        udp dport 1701 counter accept
+        udp dport 4500 counter accept
+{% endif %}
     }
     
     chain forward {
@@ -21,12 +38,25 @@ table ip filter {
 
         ct state related,established counter accept        
 
+        # accept for lan to wan
 {% for network in networks %}
 {% if network["lan"] == true %}
         ip saddr {{ network["network"] }} tcp flags & (syn|rst) == syn counter tcp option maxseg size set rt mtu
         ip saddr {{ network["network"] }} oifname "{{ pppoe["ppp-interface"] }}" counter accept
 {% endif %}
 {% endfor %}
+
+        # accept for lan to lan
+{% for nw1 in networks %}
+{% if nw1["lan"] == true %}
+{% for nw2 in networks %}
+{% if nw2["lan"] == true and nw1["network"] != nw2["network"] %}
+        ip saddr {{ nw1["network"] }} ip daddr {{ nw2["network"] }} counter accept
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+
     }
     
     chain output {
@@ -80,7 +110,7 @@ table ip6 filter {
         iif lo accept
 {% for iface in interfaces %}
 {% if iface["lan"] == true %}
-        iifname "{{ iface["name"] }}" accept
+        iif {{ iface["name"] }} accept
 {% endif %}
 {% endfor %}
     }
@@ -103,6 +133,11 @@ table ip6 filter {
             time-exceeded
         } accept
 
+{% for iface in interfaces %}
+{% if iface["lan"] == true %}
+        iif {{ iface["name"] }} accept
+{% endif %}
+{% endfor %}
     }
 
     chain output {

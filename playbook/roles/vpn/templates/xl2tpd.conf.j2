@@ -1,0 +1,26 @@
+[global]
+port = 1701
+access control = no
+rand source = dev
+
+debug avp = yes
+debug network = yes
+debug packet = yes
+debug state = yes
+debug tunnel = yes
+
+[lns default]
+exclusive = no
+local ip = {{ vpn["l2tp"]["ip"]["local"] }}
+ip range = {{ vpn["l2tp"]["ip"]["range"] }}
+assign ip = yes
+require chap = yes
+refuse pap = yes
+require authentication = no
+unix authentication = no
+name = {{ vpn["l2tp"]["name"] }}
+ppp debug = yes
+pppoptfile = /etc/ppp/options.xl2tpd.lns-default
+length bit = yes
+bps = 1000000
+

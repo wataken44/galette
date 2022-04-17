@@ -12,5 +12,8 @@ server:
   access-control: {{ network["network"] }} allow
 {% endif %}
 {% endfor %}
+{% if ipv6 is defined %}
+  access-control: {{ ipv6["network"] }}/{{ ipv6["netmask"] }} allow
+{% endif %}
   unwanted-reply-threshold: 10000000
   harden-referral-path: yes

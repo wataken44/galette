@@ -1,0 +1,31 @@
+
+- name: create l2tp configuration
+  template:
+    src: xl2tpd.conf.j2
+    dest: /etc/xl2tpd/xl2tpd.conf
+    owner: root
+    group: root
+    mode: 0644
+    
+- name: create l2tp ppp configuration
+  template:
+    src: options.xl2tpd.lns-default.j2
+    dest: /etc/ppp/options.xl2tpd.lns-default
+    owner: root
+    group: root
+    mode: 0600
+
+- name: add l2tp username and password  to secrets
+  lineinfile:
+    path: /etc/ppp/chap-secrets
+    line: '{{ item.username }}  xl2tpd  {{ item.password }}  *'
+  loop: '{{vpn["l2tp"]["users"]}}'
+  no_log: true
+
+- name: enable l2tp
+  service:
+    name: xl2tpd
+    enabled: true
+    
+    
+

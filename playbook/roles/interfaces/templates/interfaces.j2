@@ -36,7 +36,7 @@ iface {{ pppoe["ppp-interface"] }} inet ppp
 
 {% for addr in iface.get("ipv6",[]) %}
 iface {{ iface["name"] }} inet6 {{ addr["method"] }}
-{% for key in ["address", "netmask", "accept_ra", "dhcp", "request_prefix"] %}
+{% for key in ["address", "netmask", "accept_ra", "dhcp", "request_prefix", "up", "down"] %}
 {% if key in addr %}
     {{ key }} {{ addr[key] }}
 {% endif %}

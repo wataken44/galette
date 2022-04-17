@@ -1,0 +1,6 @@
+
+- include_tasks: 'ipsec.yml'
+  when: vpn is defined
+
+- include_tasks: 'l2tp.yml'
+  when: vpn is defined

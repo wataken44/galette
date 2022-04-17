@@ -1,0 +1,18 @@
+# ipsec.conf - strongSwan IPsec configuration file
+
+# basic configuration
+
+config setup
+	# strictcrlpolicy=yes
+	# uniqueids = no
+
+# Add connections here.
+
+conn l2tp
+    left=%any
+    leftprotoport=17/1701
+    authby=secret
+    right=%any
+    rightprotoport=17/%any
+    auto=add
+    type=transport
